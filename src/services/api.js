@@ -25,7 +25,7 @@ export async function getProductById(productId) {
   const obj = await response.json();
   return obj;
 }
-export function handleAddToCart(title, price, id) {
+export function handleAddToCart(title, price, id, availableQuantity) {
   const currentLocalStorage = JSON.parse(localStorage.getItem('cartItems')) || [];
 
   const indexOfExistent = currentLocalStorage
@@ -40,6 +40,7 @@ export function handleAddToCart(title, price, id) {
       price,
       id,
       quantity: 1,
+      availableQuantity,
     };
     currentLocalStorage.push(product);
   }

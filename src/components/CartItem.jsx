@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class CartItem extends Component {
   handleIncreaseOrDecrease = (decreaseOnIncrease) => {
-    const { id, update } = this.props;
+    const { id, update, availableQuantity } = this.props;
 
     const currentLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
 
@@ -11,7 +11,8 @@ class CartItem extends Component {
       .findIndex((cartItems) => cartItems.id === id);
 
     const currentQuantity = currentLocalStorage[indexOfExistent].quantity;
-    if (decreaseOnIncrease === 'increase') {
+    if (decreaseOnIncrease === 'increase'
+    && currentLocalStorage[indexOfExistent].quantity < availableQuantity) {
       currentLocalStorage[indexOfExistent].quantity += 1;
     }
     if (decreaseOnIncrease === 'decrease' && currentQuantity > 1) {
@@ -67,9 +68,10 @@ class CartItem extends Component {
 
 CartItem.propTypes = {
   title: PropTypes.string.isRequired,
-  quantity: PropTypes.string.isRequired,
+  quantity: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   update: PropTypes.func.isRequired,
+  availableQuantity: PropTypes.number.isRequired,
 };
 
 export default CartItem;
