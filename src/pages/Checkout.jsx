@@ -167,5 +167,6 @@ class Checkout extends Component {
     );
   }
 }
+// checkout page
 
 export default Checkout;
