@@ -11,6 +11,7 @@ class Home extends Component {
     queryInput: '',
     currentCategory: '',
     resultQueryProducts: [],
+    totalCartQuantity: 0,
   };
 
   async componentDidMount() {
@@ -18,6 +19,7 @@ class Home extends Component {
     this.setState({
       categories: requestApi,
     });
+    this.shoppingCartQuantitySum();
   }
 
   requestApi = async () => {
@@ -68,9 +70,17 @@ class Home extends Component {
     this.setState({ resultQueryProducts });
   };
 
+  shoppingCartQuantitySum = () => {
+    console.log('a');
+    const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const totalQuantity = currentCartItems.reduce((acc, curr) => (
+      acc + (+curr.quantity)), 0);
+    this.setState({ totalCartQuantity: totalQuantity });
+  };
+
   render() {
     const { redirectToShoppingCart, categories, queryInput,
-      resultQueryProducts } = this.state;
+      resultQueryProducts, totalCartQuantity } = this.state;
     return (
       <div>
         <input
@@ -98,7 +108,12 @@ class Home extends Component {
             <p>Nenhum produto foi encontrado</p>
           ) : (
             resultQueryProducts
-              .map((result) => <Products key={ result.id } { ...result } />)
+              .map((result) => (
+                <Products
+                  key={ result.id }
+                  { ...result }
+                  shoppingCartQuantitySum={ this.shoppingCartQuantitySum }
+                />))
           )
         }
         <button
@@ -108,6 +123,7 @@ class Home extends Component {
         >
           Carrinho de compras
         </button>
+        <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
         { redirectToShoppingCart && <Redirect to="/shoppingCart" />}
       </div>
     );

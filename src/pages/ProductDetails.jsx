@@ -14,6 +14,7 @@ class ProductDetails extends Component {
     textarea: '',
     note: '0',
     reviews: [],
+    totalCartQuantity: 0,
   };
 
   async componentDidMount() {
@@ -33,6 +34,7 @@ class ProductDetails extends Component {
 
       },
     });
+    this.shoppingCartQuantitySum();
   }
 
   redirectToCart = () => {
@@ -86,10 +88,18 @@ class ProductDetails extends Component {
     this.setState({ reviews });
   };
 
+  shoppingCartQuantitySum = () => {
+    console.log('a');
+    const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const totalQuantity = currentCartItems.reduce((acc, curr) => (
+      acc + (+curr.quantity)), 0);
+    this.setState({ totalCartQuantity: totalQuantity });
+  };
+
   render() {
     const { properties: { title, thumbnail, price, id },
       hasLoaded, redirect, inputEmail, isFormValid, textarea, note,
-      reviews } = this.state;
+      reviews, totalCartQuantity } = this.state;
 
     return (
       <div>
@@ -105,7 +115,10 @@ class ProductDetails extends Component {
             <button
               data-testid="product-detail-add-to-cart"
               type="button"
-              onClick={ () => handleAddToCart(title, price, id) }
+              onClick={ () => {
+                handleAddToCart(title, price, id);
+                this.shoppingCartQuantitySum();
+              } }
             >
               Add to cart
             </button>
@@ -119,6 +132,7 @@ class ProductDetails extends Component {
         >
           Ir para carrinho!
         </button>
+        <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
         { redirect && <Redirect to="/shoppingCart" />}
         <form>
           <input
