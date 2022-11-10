@@ -5,7 +5,8 @@ import { handleAddToCart } from '../services/api';
 
 class Products extends Component {
   render() {
-    const { title, price, thumbnail, id, shoppingCartQuantitySum } = this.props;
+    const { title, price, thumbnail, id, shoppingCartQuantitySum,
+      available_quantity: availableQuantity } = this.props;
 
     return (
       <div
@@ -26,7 +27,7 @@ class Products extends Component {
           data-testid="product-add-to-cart"
           type="button"
           onClick={ () => {
-            handleAddToCart(title, price, id);
+            handleAddToCart(title, price, id, availableQuantity);
             shoppingCartQuantitySum();
           } }
         >
@@ -43,6 +44,7 @@ Products.propTypes = {
   shoppingCartQuantitySum: PropTypes.func.isRequired,
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  available_quantity: PropTypes.number.isRequired,
 };
 
 export default Products;
