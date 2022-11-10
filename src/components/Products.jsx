@@ -5,7 +5,7 @@ import { handleAddToCart } from '../services/api';
 
 class Products extends Component {
   render() {
-    const { title, price, thumbnail, id } = this.props;
+    const { title, price, thumbnail, id, shoppingCartQuantitySum } = this.props;
 
     return (
       <div
@@ -25,7 +25,10 @@ class Products extends Component {
         <button
           data-testid="product-add-to-cart"
           type="button"
-          onClick={ () => handleAddToCart(title, price, id) }
+          onClick={ () => {
+            handleAddToCart(title, price, id);
+            shoppingCartQuantitySum();
+          } }
         >
           Adicionar ao Carrinho
         </button>
@@ -35,10 +38,11 @@ class Products extends Component {
 }
 
 Products.propTypes = {
-  title: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
+  shoppingCartQuantitySum: PropTypes.func.isRequired,
   thumbnail: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default Products;
