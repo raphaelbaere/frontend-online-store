@@ -23,7 +23,7 @@ class ProductDetails extends Component {
     const { match } = this.props;
     const { params: { id } } = match;
     const response = await getProductById(id);
-    const { title, thumbnail, price } = response;
+    const { title, thumbnail, price, available_quantity: availableQuantity } = response;
     this.setState({
       hasLoaded: true,
       properties: {
@@ -31,6 +31,7 @@ class ProductDetails extends Component {
         thumbnail,
         price,
         id,
+        availableQuantity,
 
       },
     });
@@ -97,7 +98,7 @@ class ProductDetails extends Component {
   };
 
   render() {
-    const { properties: { title, thumbnail, price, id },
+    const { properties: { title, thumbnail, price, id, availableQuantity },
       hasLoaded, redirect, inputEmail, isFormValid, textarea, note,
       reviews, totalCartQuantity } = this.state;
 
@@ -116,7 +117,7 @@ class ProductDetails extends Component {
               data-testid="product-detail-add-to-cart"
               type="button"
               onClick={ () => {
-                handleAddToCart(title, price, id);
+                handleAddToCart(title, price, id, availableQuantity);
                 this.shoppingCartQuantitySum();
               } }
             >
