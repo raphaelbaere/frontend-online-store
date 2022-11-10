@@ -73,6 +73,7 @@ class Home extends Component {
   shoppingCartQuantitySum = () => {
     console.log('a');
     const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
     const totalQuantity = currentCartItems.reduce((acc, curr) => (
       acc + (+curr.quantity)), 0);
     this.setState({ totalCartQuantity: totalQuantity });
