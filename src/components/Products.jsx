@@ -7,7 +7,7 @@ import { handleAddToCart } from '../services/api';
 class Products extends Component {
   render() {
     const { title, price, thumbnail, id, shoppingCartQuantitySum,
-      available_quantity: availableQuantity, shipping } = this.props;
+      available_quantity: availableQuantity, shipping, refreshCartItems } = this.props;
     const { free_shipping: freteGratis } = shipping;
 
     return (
@@ -35,6 +35,7 @@ class Products extends Component {
           onClick={ () => {
             handleAddToCart(title, price, id, availableQuantity);
             shoppingCartQuantitySum();
+            refreshCartItems();
           } }
         >
           Adicionar ao Carrinho

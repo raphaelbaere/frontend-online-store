@@ -1,10 +1,12 @@
-import { Button, TextField, Select, MenuItem, InputLabel } from '@mui/material';
+import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Products from '../components/Products';
 import { getProductsFromCategoryAndQuery,
   getCategories, getProductsFromCategory } from '../services/api';
+import CartItem from '../components/CartItem';
 
 class Home extends Component {
   state = {
@@ -15,6 +17,8 @@ class Home extends Component {
     resultQueryProducts: [],
     totalCartQuantity: 0,
     selectSort: 'none',
+    showCartPreview: false,
+    cartItems: [],
   };
 
   async componentDidMount() {
@@ -23,6 +27,7 @@ class Home extends Component {
       categories: requestApi,
     });
     this.shoppingCartQuantitySum();
+    this.refreshCartitems();
   }
 
   requestApi = async () => {
@@ -33,7 +38,6 @@ class Home extends Component {
   onCategoryButtonClick = async (id) => {
     this.setCategory(id);
     const clickedCategory = await getProductsFromCategory(id);
-    console.log(clickedCategory.results);
     const { results } = clickedCategory;
     this.setState({ resultQueryProducts: results });
   };
@@ -97,57 +101,26 @@ class Home extends Component {
     this.setState({ totalCartQuantity: totalQuantity });
   };
 
+  onCartPreviewClick = () => {
+    this.refreshCartitems();
+    this.setState((prevState) => ({
+      showCartPreview: !prevState.showCartPreview,
+    }));
+  };
+
+  refreshCartitems = () => {
+    const currentLocalStorage = JSON.parse(localStorage.getItem('cartItems')) || [];
+    this.setState({ cartItems: currentLocalStorage });
+  };
+
   render() {
     const { redirectToShoppingCart, categories, queryInput,
-      resultQueryProducts, totalCartQuantity, selectSort } = this.state;
+      resultQueryProducts, totalCartQuantity, selectSort, showCartPreview,
+      cartItems } = this.state;
     return (
       <div>
         <div>
-          <Header />
-        </div>
-        <div className="search-area">
-          <TextField
-            type="text"
-            data-testid="query-input"
-            value={ queryInput }
-            name="queryInput"
-            onChange={ this.handleOnChange }
-            label="Procure por produtos"
-          />
-          <Button
-            type="button"
-            data-testid="query-button"
-            onClick={ this.handleQueryButton }
-            variant="contained"
-          >
-            Query!
-          </Button>
-          <Select
-            name="sortByPrice"
-            id="filter"
-            onChange={ this.handleSort }
-            label="Filtro"
-            sx={ { width: 225 } }
-          >
-            <MenuItem
-              selected={ selectSort === 'none' }
-              value="none"
-            >
-              Nenhum
-            </MenuItem>
-            <MenuItem
-              selected={ selectSort === 'crescent' }
-              value="crescent"
-            >
-              Ordernar Menor Preço
-            </MenuItem>
-            <MenuItem
-              selected={ selectSort === 'decrescent' }
-              value="decrescent"
-            >
-              Ordernar Maior Preço
-            </MenuItem>
-          </Select>
+          <Header sx={ { position: 'fixed', top: 0 } } />
         </div>
         <div className="main">
           {categories.length === 0 ? (
@@ -158,6 +131,54 @@ class Home extends Component {
             <div className="categories">{this.handleCategory(categories)}</div>
           )}
           <div className="products">
+            <div className="search-area">
+              <TextField
+                type="text"
+                data-testid="query-input"
+                value={ queryInput }
+                name="queryInput"
+                onChange={ this.handleOnChange }
+                label="Procure por produtos"
+              />
+              <Button
+                type="button"
+                data-testid="query-button"
+                onClick={ this.handleQueryButton }
+                variant="contained"
+              >
+                Query!
+              </Button>
+              <Select
+                name="sortByPrice"
+                id="filter"
+                onChange={ this.handleSort }
+                label="Filtro"
+                sx={ { width: 225 } }
+              >
+                <MenuItem
+                  selected={ selectSort === 'none' }
+                  value="none"
+                >
+                  Nenhum
+                </MenuItem>
+                <MenuItem
+                  selected={ selectSort === 'crescent' }
+                  value="crescent"
+                >
+                  Ordernar Menor Preço
+                </MenuItem>
+                <MenuItem
+                  selected={ selectSort === 'decrescent' }
+                  value="decrescent"
+                >
+                  Ordernar Maior Preço
+                </MenuItem>
+              </Select>
+              <IconButton onClick={ this.onCartPreviewClick } sx={ { position: 'absolute', right: 18 } }>
+                <ShoppingCartIcon sx={ { transform: 'rotateY(180deg)' } } />
+                <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
+              </IconButton>
+            </div>
             {
               !resultQueryProducts.length ? (
                 <p>Nenhum produto foi encontrado</p>
@@ -168,20 +189,39 @@ class Home extends Component {
                       key={ result.id }
                       { ...result }
                       shoppingCartQuantitySum={ this.shoppingCartQuantitySum }
+                      refreshCartItems={ this.refreshCartitems }
                     />))
               )
             }
           </div>
-          <button
-            type="button"
-            data-testid="shopping-cart-button"
-            onClick={ () => this.setState({ redirectToShoppingCart: true }) }
-          >
-            Carrinho de compras
-          </button>
-          <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
-          { redirectToShoppingCart && <Redirect to="/shoppingCart" />}
         </div>
+        {showCartPreview && (
+          <div className="cartPreview rounded shadow text-white text-center">
+            { cartItems.length === 0 ? (
+              <p
+                data-testid="shopping-cart-empty-message"
+              >
+                Seu carrinho está vazio
+              </p>
+            ) : (
+              cartItems.map((cartItem) => (<CartItem
+                key={ cartItem.id }
+                { ...cartItem }
+                shoppingCartQuantitySum={ this.shoppingCartQuantitySum }
+                refreshCartItems={ this.refreshCartitems }
+              />
+              ))
+            )}
+            <button
+              type="button"
+              data-testid="shopping-cart-button"
+              onClick={ () => this.setState({ redirectToShoppingCart: true }) }
+            >
+              Ir para carrinho de compras
+            </button>
+            { redirectToShoppingCart && <Redirect to="/shoppingCart" />}
+          </div>
+        )}
       </div>
     );
   }

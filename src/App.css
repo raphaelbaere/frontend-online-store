@@ -14,14 +14,31 @@
 .search-area {
   display: flex;
   gap: 5px;
+  height: 56px;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.product {
+  width: 50%;
 }
 
 .products {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   height: 100vh;
   overflow-y: scroll;
-  width: 68%;
+  width: 83.1%;
+}
+
+.cartPreview {
+  position: absolute;
+  width: 400px;
+  height: 470px;
+  background-color: #1976D2;
+  right: 60px;
+  top: 110px;
 }

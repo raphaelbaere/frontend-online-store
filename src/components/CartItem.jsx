@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 class CartItem extends Component {
   handleIncreaseOrDecrease = (decreaseOnIncrease) => {
-    const { id, update, availableQuantity } = this.props;
+    const { id, update, availableQuantity, shoppingCartQuantitySum, refreshCartItems } = this.props;
 
     const currentLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
 
@@ -20,16 +20,20 @@ class CartItem extends Component {
     }
 
     localStorage.setItem('cartItems', JSON.stringify(currentLocalStorage));
+    shoppingCartQuantitySum();
+    refreshCartItems();
     update();
   };
 
   handleDeleteCartItem = () => {
-    const { id, update } = this.props;
+    const { id, update, shoppingCartQuantitySum, refreshCartItems } = this.props;
 
     const currentLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
     const filteredLocalStorage = currentLocalStorage
       .filter((cartItems) => cartItems.id !== id);
     localStorage.setItem('cartItems', JSON.stringify(filteredLocalStorage));
+    shoppingCartQuantitySum();
+    refreshCartItems();
     update();
   };
 
