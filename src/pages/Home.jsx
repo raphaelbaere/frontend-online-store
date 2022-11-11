@@ -64,10 +64,26 @@ class Home extends Component {
   handleQueryButton = async () => {
     const { currentCategory, queryInput } = this.state;
     const queryProducts = await
-    getProductsFromCategoryAndQuery(currentCategory, queryInput);
+    getProductsFromCategoryAndQuery(
+      currentCategory,
+      queryInput,
+    );
     const resultQueryProducts = queryProducts.results;
-    console.log(resultQueryProducts);
     this.setState({ resultQueryProducts });
+  };
+
+  handleSort = ({ target }) => {
+    const { value } = target;
+    console.log(value);
+    const { resultQueryProducts } = this.state;
+
+    const sortFunctions = {
+      crescent: (a, b) => a.price - b.price,
+      decrescent: (a, b) => b.price - a.price,
+    };
+    const sortFunctionToUse = sortFunctions[value];
+    const sortedQuery = resultQueryProducts.sort(sortFunctionToUse);
+    this.setState({ resultQueryProducts: sortedQuery });
   };
 
   shoppingCartQuantitySum = () => {
@@ -97,6 +113,13 @@ class Home extends Component {
         >
           Query!
         </button>
+        <select
+          name="sortByPrice"
+          onChange={ this.handleSort }
+        >
+          <option value="crescent">Ordernar Menor Preço</option>
+          <option value="decrescent">Ordernar Maior Preço</option>
+        </select>
         {categories.length === 0 ? (
           <h1 data-testid="home-initial-message">
             Digite algum termo de pesquisa ou escolha uma categoria.
