@@ -1,5 +1,7 @@
+import { Button, TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import Header from '../components/Header';
 import Products from '../components/Products';
 import { getProductsFromCategoryAndQuery,
   getCategories, getProductsFromCategory } from '../services/api';
@@ -100,71 +102,86 @@ class Home extends Component {
       resultQueryProducts, totalCartQuantity, selectSort } = this.state;
     return (
       <div>
-        <input
-          data-testid="query-input"
-          value={ queryInput }
-          name="queryInput"
-          onChange={ this.handleOnChange }
-        />
-        <button
-          type="button"
-          data-testid="query-button"
-          onClick={ this.handleQueryButton }
-        >
-          Query!
-        </button>
-        <select
-          name="sortByPrice"
-          onChange={ this.handleSort }
-        >
-          <option
-            selected={ selectSort === 'none' }
-            value="none"
+        <div>
+          <Header />
+        </div>
+        <div className="search-area">
+          <TextField
+            type="text"
+            data-testid="query-input"
+            value={ queryInput }
+            name="queryInput"
+            onChange={ this.handleOnChange }
+            label="Procure por produtos"
+          />
+          <Button
+            type="button"
+            data-testid="query-button"
+            onClick={ this.handleQueryButton }
+            variant="contained"
           >
-            Nenhum
-          </option>
-          <option
-            selected={ selectSort === 'crescent' }
-            value="crescent"
+            Query!
+          </Button>
+          <Select
+            name="sortByPrice"
+            id="filter"
+            onChange={ this.handleSort }
+            label="Filtro"
+            sx={ { width: 225 } }
           >
-            Ordernar Menor Preço
-          </option>
-          <option
-            selected={ selectSort === 'decrescent' }
-            value="decrescent"
-          >
-            Ordernar Maior Preço
-          </option>
-        </select>
-        {categories.length === 0 ? (
-          <h1 data-testid="home-initial-message">
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </h1>
-        ) : (
-          <div>{this.handleCategory(categories)}</div>
-        )}
-        {
-          !resultQueryProducts.length ? (
-            <p>Nenhum produto foi encontrado</p>
+            <MenuItem
+              selected={ selectSort === 'none' }
+              value="none"
+            >
+              Nenhum
+            </MenuItem>
+            <MenuItem
+              selected={ selectSort === 'crescent' }
+              value="crescent"
+            >
+              Ordernar Menor Preço
+            </MenuItem>
+            <MenuItem
+              selected={ selectSort === 'decrescent' }
+              value="decrescent"
+            >
+              Ordernar Maior Preço
+            </MenuItem>
+          </Select>
+        </div>
+        <div className="main">
+          {categories.length === 0 ? (
+            <h1 data-testid="home-initial-message">
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </h1>
           ) : (
-            resultQueryProducts
-              .map((result) => (
-                <Products
-                  key={ result.id }
-                  { ...result }
-                  shoppingCartQuantitySum={ this.shoppingCartQuantitySum }
-                />))
-          )
-        }
-        <button
-          type="button"
-          data-testid="shopping-cart-button"
-          onClick={ () => this.setState({ redirectToShoppingCart: true }) }
-        >
-          Carrinho de compras
-        </button>
-        <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
-        { redirectToShoppingCart && <Redirect to="/shoppingCart" />}
+            <div className="categories">{this.handleCategory(categories)}</div>
+          )}
+          <div className="products">
+            {
+              !resultQueryProducts.length ? (
+                <p>Nenhum produto foi encontrado</p>
+              ) : (
+                resultQueryProducts
+                  .map((result) => (
+                    <Products
+                      key={ result.id }
+                      { ...result }
+                      shoppingCartQuantitySum={ this.shoppingCartQuantitySum }
+                    />))
+              )
+            }
+          </div>
+          <button
+            type="button"
+            data-testid="shopping-cart-button"
+            onClick={ () => this.setState({ redirectToShoppingCart: true }) }
+          >
+            Carrinho de compras
+          </button>
+          <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
+          { redirectToShoppingCart && <Redirect to="/shoppingCart" />}
+        </div>
       </div>
     );
   }

@@ -1,3 +1,4 @@
+import { Card } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,8 +11,9 @@ class Products extends Component {
     const { free_shipping: freteGratis } = shipping;
 
     return (
-      <div
+      <Card
         data-testid="product"
+        className="product"
       >
         <Link
           to={ `/productDetails/${id}` }
@@ -37,7 +39,7 @@ class Products extends Component {
         >
           Adicionar ao Carrinho
         </button>
-      </div>
+      </Card>
     );
   }
 }
