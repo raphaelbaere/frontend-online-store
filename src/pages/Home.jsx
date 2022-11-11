@@ -12,6 +12,7 @@ class Home extends Component {
     currentCategory: '',
     resultQueryProducts: [],
     totalCartQuantity: 0,
+    selectSort: 'none',
   };
 
   async componentDidMount() {
@@ -64,14 +65,29 @@ class Home extends Component {
   handleQueryButton = async () => {
     const { currentCategory, queryInput } = this.state;
     const queryProducts = await
-    getProductsFromCategoryAndQuery(currentCategory, queryInput);
+    getProductsFromCategoryAndQuery(
+      currentCategory,
+      queryInput,
+    );
     const resultQueryProducts = queryProducts.results;
-    console.log(resultQueryProducts);
     this.setState({ resultQueryProducts });
   };
 
+  handleSort = async (event) => {
+    const { value } = event.target;
+    this.handleOnChange(event);
+    const { resultQueryProducts } = this.state;
+
+    const sortFunctions = {
+      crescent: (a, b) => a.price - b.price,
+      decrescent: (a, b) => b.price - a.price,
+    };
+    const sortFunctionToUse = sortFunctions[value];
+    const sortedQuery = resultQueryProducts.sort(sortFunctionToUse);
+    this.setState({ resultQueryProducts: sortedQuery });
+  };
+
   shoppingCartQuantitySum = () => {
-    console.log('a');
     const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
     const totalQuantity = currentCartItems.reduce((acc, curr) => (
@@ -81,7 +97,7 @@ class Home extends Component {
 
   render() {
     const { redirectToShoppingCart, categories, queryInput,
-      resultQueryProducts, totalCartQuantity } = this.state;
+      resultQueryProducts, totalCartQuantity, selectSort } = this.state;
     return (
       <div>
         <input
@@ -97,6 +113,29 @@ class Home extends Component {
         >
           Query!
         </button>
+        <select
+          name="sortByPrice"
+          onChange={ this.handleSort }
+        >
+          <option
+            selected={ selectSort === 'none' }
+            value="none"
+          >
+            Nenhum
+          </option>
+          <option
+            selected={ selectSort === 'crescent' }
+            value="crescent"
+          >
+            Ordernar Menor Preço
+          </option>
+          <option
+            selected={ selectSort === 'decrescent' }
+            value="decrescent"
+          >
+            Ordernar Maior Preço
+          </option>
+        </select>
         {categories.length === 0 ? (
           <h1 data-testid="home-initial-message">
             Digite algum termo de pesquisa ou escolha uma categoria.
