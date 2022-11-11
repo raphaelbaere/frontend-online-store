@@ -12,6 +12,7 @@ class Home extends Component {
     currentCategory: '',
     resultQueryProducts: [],
     totalCartQuantity: 0,
+    selectSort: 'none',
   };
 
   async componentDidMount() {
@@ -72,9 +73,9 @@ class Home extends Component {
     this.setState({ resultQueryProducts });
   };
 
-  handleSort = ({ target }) => {
-    const { value } = target;
-    console.log(value);
+  handleSort = async (event) => {
+    const { value } = event.target;
+    this.handleOnChange(event);
     const { resultQueryProducts } = this.state;
 
     const sortFunctions = {
@@ -87,7 +88,6 @@ class Home extends Component {
   };
 
   shoppingCartQuantitySum = () => {
-    console.log('a');
     const currentCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
     const totalQuantity = currentCartItems.reduce((acc, curr) => (
@@ -97,7 +97,7 @@ class Home extends Component {
 
   render() {
     const { redirectToShoppingCart, categories, queryInput,
-      resultQueryProducts, totalCartQuantity } = this.state;
+      resultQueryProducts, totalCartQuantity, selectSort } = this.state;
     return (
       <div>
         <input
@@ -117,8 +117,24 @@ class Home extends Component {
           name="sortByPrice"
           onChange={ this.handleSort }
         >
-          <option value="crescent">Ordernar Menor Preço</option>
-          <option value="decrescent">Ordernar Maior Preço</option>
+          <option
+            selected={ selectSort === 'none' }
+            value="none"
+          >
+            Nenhum
+          </option>
+          <option
+            selected={ selectSort === 'crescent' }
+            value="crescent"
+          >
+            Ordernar Menor Preço
+          </option>
+          <option
+            selected={ selectSort === 'decrescent' }
+            value="decrescent"
+          >
+            Ordernar Maior Preço
+          </option>
         </select>
         {categories.length === 0 ? (
           <h1 data-testid="home-initial-message">
