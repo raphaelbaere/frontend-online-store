@@ -22,7 +22,9 @@
 }
 
 .product {
+  border: solid 1px black;
   width: 50%;
+  background-color: #1976D2;
 }
 
 .products {

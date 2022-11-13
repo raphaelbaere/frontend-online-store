@@ -1,4 +1,8 @@
-import { Card } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Button, CardActionArea, CardActions } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,34 +16,50 @@ class Products extends Component {
 
     return (
       <Card
+        sx={ { maxWidth: 145 } }
         data-testid="product"
         className="product"
       >
-        <Link
-          to={ `/productDetails/${id}` }
-          data-testid="product-detail-link"
-        >
-          <h1>{ title }</h1>
-          <img
-            alt={ title }
-            src={ thumbnail }
-          />
-          {
-            freteGratis && <p data-testid="free-shipping">Frete grátis</p>
-          }
-          <p>{ price }</p>
-        </Link>
-        <button
-          data-testid="product-add-to-cart"
-          type="button"
-          onClick={ () => {
-            handleAddToCart(title, price, id, availableQuantity);
-            shoppingCartQuantitySum();
-            refreshCartItems();
-          } }
-        >
-          Adicionar ao Carrinho
-        </button>
+        <CardActionArea>
+          <CardContent>
+            <Link
+              to={ `/productDetails/${id}` }
+              data-testid="product-detail-link"
+            >
+              <CardMedia
+                component="img"
+                image={ thumbnail }
+                alt={ title }
+              />
+              <Typography>{ title }</Typography>
+              {
+                freteGratis && <p data-testid="free-shipping">
+                  <img src="../frete" alt="frete" />
+                  Frete grátis
+                </p>
+              }
+              <p>
+                R$
+                { price }
+              </p>
+            </Link>
+          </CardContent>
+          <CardActions>
+            <Button
+              data-testid="product-add-to-cart"
+              type="button"
+              size="small"
+              variant="contained"
+              onClick={ () => {
+                handleAddToCart(title, price, id, availableQuantity);
+                shoppingCartQuantitySum();
+                refreshCartItems();
+              } }
+            >
+              Adicionar ao Carrinho
+            </Button>
+          </CardActions>
+        </CardActionArea>
       </Card>
     );
   }

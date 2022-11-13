@@ -2,6 +2,8 @@ import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import Header from '../components/Header';
 import Products from '../components/Products';
 import { getProductsFromCategoryAndQuery,
@@ -148,32 +150,35 @@ class Home extends Component {
               >
                 Query!
               </Button>
-              <Select
-                name="sortByPrice"
-                id="filter"
-                onChange={ this.handleSort }
-                label="Filtro"
-                sx={ { width: 225 } }
-              >
-                <MenuItem
-                  selected={ selectSort === 'none' }
-                  value="none"
+              <FormControl>
+                <InputLabel id="filter">Filtro</InputLabel>
+                <Select
+                  name="sortByPrice"
+                  id="filter"
+                  onChange={ this.handleSort }
+                  label="Filtro"
+                  sx={ { width: 225 } }
                 >
-                  Nenhum
-                </MenuItem>
-                <MenuItem
-                  selected={ selectSort === 'crescent' }
-                  value="crescent"
-                >
-                  Ordernar Menor Preço
-                </MenuItem>
-                <MenuItem
-                  selected={ selectSort === 'decrescent' }
-                  value="decrescent"
-                >
-                  Ordernar Maior Preço
-                </MenuItem>
-              </Select>
+                  <MenuItem
+                    selected={ selectSort === 'none' }
+                    value="none"
+                  >
+                    Nenhum
+                  </MenuItem>
+                  <MenuItem
+                    selected={ selectSort === 'crescent' }
+                    value="crescent"
+                  >
+                    Ordernar Menor Preço
+                  </MenuItem>
+                  <MenuItem
+                    selected={ selectSort === 'decrescent' }
+                    value="decrescent"
+                  >
+                    Ordernar Maior Preço
+                  </MenuItem>
+                </Select>
+              </FormControl>
               <IconButton onClick={ this.onCartPreviewClick } sx={ { position: 'absolute', right: 18 } }>
                 <ShoppingCartIcon sx={ { transform: 'rotateY(180deg)' } } />
                 <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
