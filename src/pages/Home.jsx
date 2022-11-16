@@ -130,7 +130,11 @@ class Home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </h1>
           ) : (
-            <div className="categories">{this.handleCategory(categories)}</div>
+            <div className="categories">
+              <p>Categorias</p>
+              <br />
+              {this.handleCategory(categories)}
+            </div>
           )}
           <div className="products">
             <div className="search-area">
@@ -148,7 +152,7 @@ class Home extends Component {
                 onClick={ this.handleQueryButton }
                 variant="contained"
               >
-                Query!
+                Pesquisar
               </Button>
               <FormControl>
                 <InputLabel id="filter">Filtro</InputLabel>

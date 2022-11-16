@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
 import Review from '../components/Review';
+import Header from '../components/Header';
 import { getProductById, handleAddToCart } from '../services/api';
 
 class ProductDetails extends Component {
@@ -104,102 +106,129 @@ class ProductDetails extends Component {
 
     return (
       <div>
-        { hasLoaded && (
-          <>
-            <p data-testid="product-detail-name">{ title }</p>
-            <img
-              data-testid="product-detail-image"
-              src={ thumbnail }
-              alt={ title }
-            />
-            <p data-testid="product-detail-price">{ price }</p>
-            <button
-              data-testid="product-detail-add-to-cart"
-              type="button"
-              onClick={ () => {
-                handleAddToCart(title, price, id, availableQuantity);
-                this.shoppingCartQuantitySum();
-              } }
-            >
-              Add to cart
-            </button>
+        <div>
+          <Header sx={ { position: 'fixed', top: 0 } } />
+        </div>
+        <div className="productDetails-content">
+          <div className="productDetails-content-details">
+            { hasLoaded && (
+              <>
+                <p data-testid="product-detail-name">{ title }</p>
+                <img
+                  className="productDetails-img"
+                  data-testid="product-detail-image"
+                  src={ thumbnail }
+                  alt={ title }
+                />
+                <p data-testid="product-detail-price">
+                  R$
+                  { price }
+                </p>
+                <Button
+                  className="productDetails-button"
+                  data-testid="product-detail-add-to-cart"
+                  type="button"
+                  size="small"
+                  variant="contained"
+                  onClick={ () => {
+                    handleAddToCart(title, price, id, availableQuantity);
+                    this.shoppingCartQuantitySum();
+                  } }
+                >
+                  Add to cart
+                </Button>
 
-          </>
-        )}
-        <button
-          data-testid="shopping-cart-button"
-          type="button"
-          onClick={ this.redirectToCart }
-        >
-          Ir para carrinho!
-        </button>
-        <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
-        { redirect && <Redirect to="/shoppingCart" />}
-        <form>
-          <input
-            type="email"
-            name="inputEmail"
-            value={ inputEmail }
-            onChange={ this.handleInputChange }
-            data-testid="product-detail-email"
-            placeholder="Digite seu email"
-            required
-          />
-          <div onChange={ this.handleInputChange }>
-            <input
-              checked={ note === '1' }
-              value="1"
-              type="radio"
-              name="note"
-              data-testid="1-rating"
-            />
-            <input
-              checked={ note === '2' }
-              value="2"
-              type="radio"
-              name="note"
-              data-testid="2-rating"
-            />
-            <input
-              checked={ note === '3' }
-              value="3"
-              type="radio"
-              name="note"
-              data-testid="3-rating"
-            />
-            <input
-              checked={ note === '4' }
-              value="4"
-              type="radio"
-              name="note"
-              data-testid="4-rating"
-            />
-            <input
-              checked={ note === '5' }
-              value="5"
-              type="radio"
-              name="note"
-              data-testid="5-rating"
-            />
+              </>
+            )}
+            <Button
+              className="productDetails-button"
+              data-testid="shopping-cart-button"
+              type="button"
+              size="small"
+              variant="contained"
+              onClick={ this.redirectToCart }
+            >
+              Ir para carrinho!
+            </Button>
+            <p data-testid="shopping-cart-size">
+              Quantidade no carrinho: {totalCartQuantity}
+            </p>
+            { redirect && <Redirect to="/shoppingCart" />}
           </div>
-          <textarea
-            name="textarea"
-            value={ textarea }
-            onChange={ this.handleInputChange }
-            data-testid="product-detail-evaluation"
-          />
-          <button
-            type="button"
-            data-testid="submit-review-btn"
-            onClick={ this.handleSubmit }
-          >
-            Enviar
-          </button>
-          { !isFormValid && <p data-testid="error-msg"> Campos inválidos </p>}
-        </form>
-        { reviews.length && (
-          reviews.map((review) => <Review key={ review.textarea } { ...review } />)
-        )}
+          <form className="productDetails-content-form">
+            <p>Avalie o produto:</p>
+            <div className="productDetails-email">
+              <TextField
+                type="email"
+                name="inputEmail"
+                value={ inputEmail }
+                onChange={ this.handleInputChange }
+                data-testid="product-detail-email"
+                placeholder="Digite seu email"
+                required
+              />
+              <div onChange={ this.handleInputChange }>
+                <input
+                  checked={ note === '1' }
+                  value="1"
+                  type="radio"
+                  name="note"
+                  data-testid="1-rating"
+                />
+                <input
+                  checked={ note === '2' }
+                  value="2"
+                  type="radio"
+                  name="note"
+                  data-testid="2-rating"
+                />
+                <input
+                  checked={ note === '3' }
+                  value="3"
+                  type="radio"
+                  name="note"
+                  data-testid="3-rating"
+                />
+                <input
+                  checked={ note === '4' }
+                  value="4"
+                  type="radio"
+                  name="note"
+                  data-testid="4-rating"
+                />
+                <input
+                  checked={ note === '5' }
+                  value="5"
+                  type="radio"
+                  name="note"
+                  data-testid="5-rating"
+                />
+              </div>
+            </div>
+            <textarea
+              className="productdetails-textarea"
+              name="textarea"
+              value={ textarea }
+              onChange={ this.handleInputChange }
+              data-testid="product-detail-evaluation"
+              placeholder="Digita sua mensagem"
+            />
+            <Button
+              className="productDetails-button"
+              type="button"
+              data-testid="submit-review-btn"
+              size="small"
+              variant="contained"
+              onClick={ this.handleSubmit }
+            >
+              Enviar
+            </Button>
+            { !isFormValid && <p data-testid="error-msg"> Campos inválidos </p>}
+          </form>
+          { reviews.length && (
+            reviews.map((review) => <Review key={ review.textarea } { ...review } />)
+          )}
+        </div>
       </div>
     );
   }

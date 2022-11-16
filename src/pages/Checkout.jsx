@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
+import Header from '../components/Header';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 class Checkout extends Component {
   state = {
@@ -59,110 +63,154 @@ class Checkout extends Component {
       address, payment, isFormValid, cartItems, goToHome } = this.state;
     return (
       <div>
-        { cartItems.length === 0 ? (
-          <p
-            data-testid="shopping-cart-empty-message"
-          >
-            Seu carrinho está vazio
-          </p>
-        ) : (
-          cartItems.map((cartItem) => (
-            <p key={ cartItem.id }>
-              { cartItem.title }
-            </p>
-          ))
-        )}
-
-        <form>
-          <input
-            type="text"
-            name="name"
-            data-testid="checkout-fullname"
-            placeholder="Nome Completo"
-            value={ name }
-            onChange={ this.handleInputChange }
-          />
-          <input
-            type="text"
-            name="cpf"
-            data-testid="checkout-cpf"
-            placeholder="CPF"
-            value={ cpf }
-            onChange={ this.handleInputChange }
-          />
-          <input
-            type="email"
-            name="email"
-            data-testid="checkout-email"
-            placeholder="Email"
-            value={ email }
-            onChange={ this.handleInputChange }
-          />
-          <input
-            type="text"
-            name="phone"
-            data-testid="checkout-phone"
-            placeholder="Telefone"
-            value={ phone }
-            onChange={ this.handleInputChange }
-          />
-          <input
-            type="text"
-            name="cep"
-            data-testid="checkout-cep"
-            placeholder="CEP"
-            value={ cep }
-            onChange={ this.handleInputChange }
-          />
-          <input
-            type="text"
-            name="address"
-            data-testid="checkout-address"
-            placeholder="Endereço"
-            value={ address }
-            onChange={ this.handleInputChange }
-          />
-          <div onChange={ this.handleInputChange }>
-            <input
-              checked={ payment === 'ticket' }
-              value="ticket"
-              type="radio"
-              name="payment"
-              data-testid="ticket-payment"
-            />
-            <input
-              checked={ payment === 'visa' }
-              value="visa"
-              type="radio"
-              name="payment"
-              data-testid="visa-payment"
-            />
-            <input
-              checked={ payment === 'master' }
-              value="master"
-              type="radio"
-              name="payment"
-              data-testid="master-payment"
-            />
-            <input
-              checked={ payment === 'elo' }
-              value="elo"
-              type="radio"
-              name="payment"
-              data-testid="elo-payment"
-            />
+        <div>
+          <Header sx={ { position: 'fixed', top: 0 } } />
+        </div>
+        <div className="checkout-content">
+          <div className="checkout-cartitem">
+            <p>Produtos no carrinho:</p>
+            <br />
+            { cartItems.length === 0 ? (
+              <p
+                data-testid="shopping-cart-empty-message"
+              >
+                Seu carrinho está vazio
+              </p>
+            ) : (
+              cartItems.map((cartItem) => (
+                <li key={ cartItem.id }>
+                  { cartItem.title }
+                </li>
+              ))
+            )}
           </div>
-          <button
-            type="button"
-            data-testid="checkout-btn"
-            onClick={ this.handleSubmit }
-          >
-            Comprar
+          <div className="checkout-form">
+            <FormControl>
+              <p>Para concluir a compra, preencha com seus dados:</p>
+              <br />
+              <InputLabel id="Nome Completo"> </InputLabel>
+              <TextField
+                type="text"
+                name="name"
+                size="small"
+                data-testid="checkout-fullname"
+                label="Nome Completo"
+                id="Nome Completo"
+                value={ name }
+                onChange={ this.handleInputChange }
+              />
+              <br />
+              <InputLabel id="CPF"> </InputLabel>
+              <TextField
+                type="text"
+                name="cpf"
+                size="small"
+                data-testid="checkout-cpf"
+                label="CPF"
+                id="CPF"
+                value={ cpf }
+                onChange={ this.handleInputChange }
+              />
+              <br />
+              <InputLabel id="Email"> </InputLabel>
+              <TextField
+                type="email"
+                name="email"
+                size="small"
+                data-testid="checkout-email"
+                label="Email"
+                id="Email"
+                value={ email }
+                onChange={ this.handleInputChange }
+              />
+              <br />
+              <InputLabel id="Telefone"> </InputLabel>
+              <TextField
+                type="text"
+                name="phone"
+                size="small"
+                data-testid="checkout-phone"
+                label="Telefone"
+                id="Telefone"
+                value={ phone }
+                onChange={ this.handleInputChange }
+              />
+              <br />
+              <InputLabel id="CEP"> </InputLabel>
+              <TextField
+                type="text"
+                name="cep"
+                size="small"
+                data-testid="checkout-cep"
+                label="CEP"
+                id="CEP"
+                value={ cep }
+                onChange={ this.handleInputChange }
+              />
+              <br />
+              <InputLabel id="Endereço"> </InputLabel>
+              <TextField
+                type="text"
+                name="address"
+                size="small"
+                data-testid="checkout-address"
+                label="Endereço"
+                id="Endereço"
+                value={ address }
+                onChange={ this.handleInputChange }
+              />
+              <br />
+              <p>Escolha uma forma de pagamento:</p>
+              <div
+              className="checkout-payment"
+              onChange={ this.handleInputChange }
+              >
+                <input
+                  checked={ payment === 'ticket' }
+                  value="ticket"
+                  type="radio"
+                  name="payment"
+                  data-testid="ticket-payment"
+                />Ticket
+                <input
+                  checked={ payment === 'visa' }
+                  value="visa"
+                  type="radio"
+                  name="payment"
+                  data-testid="visa-payment"
+                />Visa
+                <input
+                  checked={ payment === 'master' }
+                  value="master"
+                  type="radio"
+                  name="payment"
+                  data-testid="master-payment"
+                />Master
+                <input
+                  checked={ payment === 'elo' }
+                  value="elo"
+                  type="radio"
+                  name="payment"
+                  data-testid="elo-payment"
+                />Elo
+              </div>
+              <br />
+              <Button
+                type="Button"
+                size="small"
+                variant="contained"
+                data-testid="checkout-btn"
+                onClick={ this.handleSubmit }
+              >
+                Comprar
 
-          </button>
-        </form>
-        { !isFormValid && <p data-testid="error-msg">Campos inválidos</p>}
-        { goToHome && <Redirect to="/" /> }
+              </Button>
+              <br />
+              { !isFormValid && <p data-testid="error-msg">Campos inválidos</p>}
+            </FormControl>
+          </div>
+          { goToHome && <Redirect to="/" /> }
+        </div>
       </div>
     );
   }

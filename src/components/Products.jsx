@@ -32,12 +32,11 @@ class Products extends Component {
                 alt={ title }
               />
               <Typography>{ title }</Typography>
+              <br />
               {
-                freteGratis && <p data-testid="free-shipping">
-                  <img src="../frete" alt="frete" />
-                  Frete grátis
-                </p>
+                freteGratis && <p data-testid="free-shipping">Frete grátis</p>
               }
+              <br />
               <p>
                 R$
                 { price }

@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import CartItem from '../components/CartItem';
+import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
+import Header from '../components/Header';
 
 class ShoppingCart extends Component {
   state = {
@@ -33,29 +35,35 @@ class ShoppingCart extends Component {
     console.log(cartItems);
     return (
       <div>
-        { cartItems.length === 0 ? (
-          <p
-            data-testid="shopping-cart-empty-message"
+        <div>
+          <Header sx={ { position: 'fixed', top: 0 } } />
+        </div>
+        <div className="cartitem">
+          { cartItems.length === 0 ? (
+            <p
+              data-testid="shopping-cart-empty-message"
+            >
+              Seu carrinho está vazio
+            </p>
+          ) : (
+            cartItems.map((cartItem) => (<CartItem
+              key={ cartItem.id }
+              { ...cartItem }
+              update={ this.updateChild }
+            />
+            ))
+          )}
+          <Button
+            type="button"
+            size="small"
+            variant="contained"
+            data-testid="checkout-products"
+            onClick={ this.handleCheckout }
           >
-            Seu carrinho está vazio
-          </p>
-        ) : (
-          cartItems.map((cartItem) => (<CartItem
-            key={ cartItem.id }
-            { ...cartItem }
-            update={ this.updateChild }
-          />
-          ))
-        )}
-        <button
-          type="button"
-          data-testid="checkout-products"
-          onClick={ this.handleCheckout }
-        >
-          Fechar compra
-
-        </button>
-        { goToCheckout && <Redirect to="/checkout" /> }
+            Fechar compra
+          </Button>
+          { goToCheckout && <Redirect to="/checkout" /> }
+        </div>
       </div>
     );
   }
