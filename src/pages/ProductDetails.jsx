@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-max-depth */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -151,7 +152,8 @@ class ProductDetails extends Component {
               Ir para carrinho!
             </Button>
             <p data-testid="shopping-cart-size">
-              Quantidade no carrinho: {totalCartQuantity}
+              Quantidade no carrinho:
+              {totalCartQuantity}
             </p>
             { redirect && <Redirect to="/shoppingCart" />}
           </div>

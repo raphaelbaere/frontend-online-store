@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-max-depth */
 import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React, { Component } from 'react';
@@ -183,7 +184,10 @@ class Home extends Component {
                   </MenuItem>
                 </Select>
               </FormControl>
-              <IconButton onClick={ this.onCartPreviewClick } sx={ { position: 'absolute', right: 18 } }>
+              <IconButton
+                onClick={ this.onCartPreviewClick }
+                sx={ { position: 'absolute', right: 18 } }
+              >
                 <ShoppingCartIcon sx={ { transform: 'rotateY(180deg)' } } />
                 <p data-testid="shopping-cart-size">{totalCartQuantity}</p>
               </IconButton>

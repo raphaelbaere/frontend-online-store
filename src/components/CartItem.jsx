@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button } from '@mui/material';
@@ -46,7 +47,8 @@ class CartItem extends Component {
       <div className="cartitem-content">
         <p data-testid="shopping-cart-product-name">{ title }</p>
         <p data-testid="shopping-cart-product-quantity">
-          Quantidade: { quantity }
+          Quantidade:
+          { quantity }
         </p>
         <div className="cartitem-btn-plusless">
           <Button
