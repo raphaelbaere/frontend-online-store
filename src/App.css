@@ -16,32 +16,32 @@
   gap: 5px;
   height: 56px;
   justify-content: center;
-  margin-top: 20px;
   margin-bottom: 20px;
+  margin-top: 20px;
   width: 100%;
 }
 
 .product {
-  border: solid 1px #1976D2;
-  width: 50%;
-  background-color: #1976D2;
+  background-color: #1976d2;
+  border: solid 1px #1976d2;
   margin: 0.5rem;
+  width: 50%;
 }
 
 .products {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   height: 100vh;
+  justify-content: center;
   overflow-y: scroll;
   width: 83.1%;
 }
 
 .cartPreview {
+  background-color: #1976d2;
   position: absolute;
-  width: 400px;
   height: 470px;
-  background-color: #1976D2;
+  width: 400px;
   right: 60px;
   top: 110px;
 }

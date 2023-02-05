@@ -1,8 +1,8 @@
 // import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Button } from '@mui/material';
 import CartItem from '../components/CartItem';
-import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
 import Header from '../components/Header';
 
 class ShoppingCart extends Component {

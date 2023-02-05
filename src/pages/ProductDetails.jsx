@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import Review from '../components/Review';
 import Header from '../components/Header';
 import { getProductById, handleAddToCart } from '../services/api';

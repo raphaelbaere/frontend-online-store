@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
-import Header from '../components/Header';
+import { Button, TextField } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import Header from '../components/Header';
 
 class Checkout extends Component {
   state = {
@@ -162,8 +162,8 @@ class Checkout extends Component {
               <br />
               <p>Escolha uma forma de pagamento:</p>
               <div
-              className="checkout-payment"
-              onChange={ this.handleInputChange }
+                className="checkout-payment"
+                onChange={ this.handleInputChange }
               >
                 <input
                   checked={ payment === 'ticket' }
@@ -171,28 +171,32 @@ class Checkout extends Component {
                   type="radio"
                   name="payment"
                   data-testid="ticket-payment"
-                />Ticket
+                />
+                Ticket
                 <input
                   checked={ payment === 'visa' }
                   value="visa"
                   type="radio"
                   name="payment"
                   data-testid="visa-payment"
-                />Visa
+                />
+                Visa
                 <input
                   checked={ payment === 'master' }
                   value="master"
                   type="radio"
                   name="payment"
                   data-testid="master-payment"
-                />Master
+                />
+                Master
                 <input
                   checked={ payment === 'elo' }
                   value="elo"
                   type="radio"
                   name="payment"
                   data-testid="elo-payment"
-                />Elo
+                />
+                Elo
               </div>
               <br />
               <Button

@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Button, TextField, Select, MenuItem, IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 
 class CartItem extends Component {
   handleIncreaseOrDecrease = (decreaseOnIncrease) => {
-    const { id, update, availableQuantity, shoppingCartQuantitySum, refreshCartItems } = this.props;
+    const { id, update, availableQuantity,
+      shoppingCartQuantitySum, refreshCartItems } = this.props;
 
     const currentLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
 
